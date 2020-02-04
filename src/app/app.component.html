@@ -1,4 +1,6 @@
 <h1>{{ title }}</h1>
+
+<h2>Weather</h2>
 <table>
   <thead>
     <th>City</th>
@@ -8,7 +10,7 @@
     <th>Temp Max</th>
   </thead>
   <tbody>
-    <tr *ngFor="let city of cities">
+    <tr *ngFor="let city of paginatedCities">
       <td>{{ city.name }}</td>
       <td>{{ city.main.temp }}</td>
       <td>{{ city.main.feels_like }}</td>
@@ -17,3 +19,15 @@
     </tr>
   </tbody>
 </table>
+
+<h2>Pagination</h2>
+<select name="pagination" [(ngModel)]="paginationSize">
+  <option *ngFor="let n of paginationOptions" [value]="n"
+    >Show {{ n }} cities</option
+  >
+</select>
+<ul *ngIf="availablePages.length > 1">
+  <li *ngFor="let page of availablePages" (click)="currentPage = page">
+    Page {{ page }}
+  </li>
+</ul>

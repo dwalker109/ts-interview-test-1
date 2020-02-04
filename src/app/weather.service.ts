@@ -2,13 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
-export interface WeatherResult {
+interface WeatherResult {
   message: string;
   cod: string;
   count: number;
   list: WeatherCity[];
 }
-interface WeatherCity {
+export interface WeatherCity {
   id: number;
   name: string;
   main: WeatherCityMain;
