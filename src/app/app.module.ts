@@ -4,9 +4,10 @@ import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 
 import { AppComponent } from "./app.component";
+import { KelvinPipe } from './kelvin.pipe';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, KelvinPipe],
   imports: [BrowserModule, HttpClientModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent]

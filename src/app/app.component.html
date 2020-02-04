@@ -3,19 +3,19 @@
 <h2>Weather</h2>
 <table>
   <thead>
-    <th>City</th>
-    <th>Temp</th>
-    <th>Feels Like</th>
-    <th>Temp Min</th>
-    <th>Temp Max</th>
+    <th (click)="this.sortField = 'name'">City</th>
+    <th (click)="this.sortField = 'temp'">Temp</th>
+    <th (click)="this.sortField = 'feels_like'">Feels Like</th>
+    <th (click)="this.sortField = 'temp_min'">Temp Min</th>
+    <th (click)="this.sortField = 'temp_max'">Temp Max</th>
   </thead>
   <tbody>
-    <tr *ngFor="let city of paginatedCities">
+    <tr *ngFor="let city of displayCities">
       <td>{{ city.name }}</td>
-      <td>{{ city.main.temp }}</td>
-      <td>{{ city.main.feels_like }}</td>
-      <td>{{ city.main.temp_min }}</td>
-      <td>{{ city.main.temp_max }}</td>
+      <td>{{ city.temp | kelvin }}</td>
+      <td>{{ city.feels_like | kelvin }}</td>
+      <td>{{ city.temp_min | kelvin }}</td>
+      <td>{{ city.temp_max | kelvin }}</td>
     </tr>
   </tbody>
 </table>
