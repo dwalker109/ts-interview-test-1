@@ -50,7 +50,7 @@ export class AppComponent {
   }
   set paginationSize(size: number) {
     this._paginationSize = size;
-    this.currentPage = 1;
+    this.reset();
     this.refreshDisplayed();
   }
 
@@ -62,12 +62,29 @@ export class AppComponent {
   set sortField(field: string) {
     if ((this._sortField = field) === field) this._sortDir.reverse();
     this._sortField = field;
-    this.currentPage = 1;
+    this.reset();
     this.refreshDisplayed();
   }
 
+  private _filter: string;
+  get filter(): string {
+    return this._filter;
+  }
+  set filter(searchString: string) {
+    this._filter = searchString;
+    this.reset();
+    this.refreshDisplayed();
+  }
+
+  private reset(): void {
+    this.currentPage = 1;
+  }
+
   private refreshDisplayed(): void {
-    const sortedCities = this.allCities.sort((l, r) =>
+    const regex = new RegExp(this.filter || ".*");
+    const filteredCities = this.allCities.filter(it => regex.test(it.name));
+
+    const sortedCities = filteredCities.sort((l, r) =>
       l[this.sortField] > r[this.sortField]
         ? this._sortDir[0]
         : this._sortDir[1]

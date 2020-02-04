@@ -21,7 +21,7 @@
 </table>
 
 <h2>Pagination</h2>
-<select name="pagination" [(ngModel)]="paginationSize">
+<select [(ngModel)]="paginationSize">
   <option *ngFor="let n of paginationOptions" [value]="n"
     >Show {{ n }} cities</option
   >
@@ -31,3 +31,6 @@
     Page {{ page }}
   </li>
 </ul>
+
+<h2>Search</h2>
+<input [(ngModel)]="filter" />
