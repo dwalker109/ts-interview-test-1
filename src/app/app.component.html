@@ -1,7 +1,7 @@
 <h1>{{ title }}</h1>
 
 <h2>Weather</h2>
-<table>
+<table id="#cityTable">
   <thead>
     <th (click)="this.sortField = 'name'">City</th>
     <th (click)="this.sortField = 'temp'">Temp</th>
@@ -10,7 +10,7 @@
     <th (click)="this.sortField = 'temp_max'">Temp Max</th>
   </thead>
   <tbody>
-    <tr *ngFor="let city of displayCities">
+    <tr id="#cityList" *ngFor="let city of displayCities">
       <td>{{ city.name }}</td>
       <td>{{ city.temp | kelvin }}</td>
       <td>{{ city.feels_like | kelvin }}</td>
@@ -21,16 +21,16 @@
 </table>
 
 <h2>Pagination</h2>
-<select [(ngModel)]="paginationSize">
-  <option *ngFor="let n of paginationOptions" [value]="n"
-    >Show {{ n }} cities</option
-  >
-</select>
 <ul *ngIf="availablePages.length > 1">
   <li *ngFor="let page of availablePages" (click)="currentPage = page">
     Page {{ page }}
   </li>
 </ul>
+<select [(ngModel)]="paginationSize">
+  <option *ngFor="let n of paginationOptions" [value]="n"
+    >Show {{ n }} cities</option
+  >
+</select>
 
 <h2>Search</h2>
 <input [(ngModel)]="filter" />
