@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 
-interface WeatherResult {
+export interface WeatherResult {
   message: string;
   cod: string;
   count: number;
@@ -12,10 +12,10 @@ export interface WeatherCity {
   id: number;
   name: string;
   main: any; // Will be flattened into items below on use
-  temp: number;
-  feels_like: number;
-  temp_min: number;
-  temp_max: number;
+  temp?: number;
+  feels_like?: number;
+  temp_min?: number;
+  temp_max?: number;
 }
 
 @Injectable({
