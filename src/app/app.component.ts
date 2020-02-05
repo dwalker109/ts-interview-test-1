@@ -17,20 +17,23 @@ export class AppComponent {
 
   getWeather(): void {
     this.weatherService.getWeather().subscribe(cities => {
-      this.allCities = cities.list.map(({ id, name, main }) =>
-        // Pull sortables out to top level for now
-        ({
-          id,
-          name,
-          ...main
-        })
-      );
-      this.refreshDisplayed();
+      const temps: number[] = cities.list.map(({ main: { temp } }) => temp);
+
+      this.meanTemp =
+        temps.reduce((reducer, current) => reducer + current, 0) / temps.length;
+
+      this.allCities = cities.list.map(({ id, name, main }) => ({
+        id,
+        name,
+        ...main // Pull these out to make search simple
+      }));
+      this.cacheDisplayCities();
     });
   }
 
-  private allCities: WeatherCity[] = [];
-  public displayCities: WeatherCity[] = [];
+  allCities: WeatherCity[] = [];
+  displayCities: WeatherCity[] = [];
+  meanTemp: number;
 
   paginationOptions = [5, 10, 20, 50];
   availablePages: number[] = [1];
@@ -41,7 +44,7 @@ export class AppComponent {
   }
   set currentPage(page: number) {
     this._currentPage = page;
-    this.refreshDisplayed();
+    this.cacheDisplayCities();
   }
 
   private _paginationSize: number = this.paginationOptions[0];
@@ -51,7 +54,7 @@ export class AppComponent {
   set paginationSize(size: number) {
     this._paginationSize = size;
     this.reset();
-    this.refreshDisplayed();
+    this.cacheDisplayCities();
   }
 
   private _sortField: string = "name";
@@ -63,7 +66,7 @@ export class AppComponent {
     if ((this._sortField = field) === field) this._sortDir.reverse();
     this._sortField = field;
     this.reset();
-    this.refreshDisplayed();
+    this.cacheDisplayCities();
   }
 
   private _filter: string;
@@ -73,14 +76,17 @@ export class AppComponent {
   set filter(searchString: string) {
     this._filter = searchString;
     this.reset();
-    this.refreshDisplayed();
+    this.cacheDisplayCities();
   }
 
   private reset(): void {
     this.currentPage = 1;
   }
 
-  private refreshDisplayed(): void {
+  private cacheDisplayCities(): void {
+    const numPages = Math.ceil(this.allCities.length / this.paginationSize);
+    this.availablePages = Array.from(new Array(numPages), (x, i) => i + 1); // Range, starting at 1
+
     const regex = new RegExp(this.filter || ".*");
     const filteredCities = this.allCities.filter(it => regex.test(it.name));
 
@@ -92,9 +98,8 @@ export class AppComponent {
 
     const start = (this.currentPage - 1) * this.paginationSize;
     const end = this.currentPage * this.paginationSize;
-    this.displayCities = sortedCities.slice(start, end);
+    const paginatedCities = sortedCities.slice(start, end);
 
-    const numPages = Math.ceil(this.allCities.length / this.paginationSize);
-    this.availablePages = Array.from(new Array(numPages), (x, i) => i + 1); // Range, starting at 1
+    this.displayCities = paginatedCities;
   }
 }

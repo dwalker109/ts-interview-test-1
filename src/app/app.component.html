@@ -34,3 +34,20 @@
 
 <h2>Search</h2>
 <input [(ngModel)]="filter" />
+
+<h2>Graph</h2>
+<div>
+  <div
+    class="chart-line chart-line__mean"
+    [style.width]="((meanTemp | kelvin) + 'px').replace('.', '')"
+  >
+    Mean {{ meanTemp | kelvin }} degrees C
+  </div>
+  <div
+    class="chart-line"
+    *ngFor="let city of allCities"
+    [style.width]="((city.temp | kelvin) + 'px').replace('.', '')"
+  >
+    {{ city.name }} ({{ city.temp | kelvin }} degrees C)
+  </div>
+</div>
