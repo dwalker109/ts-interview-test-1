@@ -8,6 +8,11 @@ import { WeatherService, WeatherCity } from "./weather.service";
 })
 export class AppComponent {
   title = "techspert-io-take-home";
+  allCities: WeatherCity[] = [];
+  displayCities: WeatherCity[] = [];
+  meanTemp: number;
+  paginationOptions = [5, 10, 20, 50];
+  availablePages: number[] = [1];
 
   constructor(private weatherService: WeatherService) {}
 
@@ -27,16 +32,10 @@ export class AppComponent {
         name,
         ...main // Pull these out to make search simple
       }));
+
       this.cacheDisplayCities();
     });
   }
-
-  allCities: WeatherCity[] = [];
-  displayCities: WeatherCity[] = [];
-  meanTemp: number;
-
-  paginationOptions = [5, 10, 20, 50];
-  availablePages: number[] = [1];
 
   private _currentPage: number = 1;
   get currentPage(): number {
